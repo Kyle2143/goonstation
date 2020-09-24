@@ -150,6 +150,7 @@
 	logTheThing("diary", null, src, "Login attempt: [src.ckey] from [src.address] via [src.connection], compid [src.computer_id]", "access")
 
 	login_success = 0
+	
 
 	if(findtext(src.key, "Telnet @"))
 		boutput(src, "Sorry, this game does not support Telnet.")
@@ -552,7 +553,7 @@
 			sendItemIcons(src)
 
 	Z_LOG_DEBUG("Client/New", "[src.ckey] - new() finished.")
-
+	src.create_parallax()
 	login_success = 1
 /*
 /client/proc/write_gauntlet_matches()

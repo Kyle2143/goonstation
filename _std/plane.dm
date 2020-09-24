@@ -1,5 +1,6 @@
 #define PLANE_UNDERFLOOR -120 // that's where floorcluwnes live
 #define PLANE_SPACE -115
+#define PLANE_PARALLAX -111
 #define PLANE_FLOOR -110
 #define PLANE_WALL -105
 #define PLANE_NOSHADOW_BELOW -101
@@ -80,6 +81,7 @@ client
 		Z_LOG_DEBUG("Cient/New", "[src.ckey] - Adding plane_parents")
 		plane_parents += new /obj/screen/plane_parent(PLANE_UNDERFLOOR, name = "underfloor_plane")
 		plane_parents += new /obj/screen/plane_parent(PLANE_SPACE, name = "space_plane")
+		plane_parents += new /obj/screen/plane_parent(PLANE_PARALLAX, name = "parallax_plane",blend_mode = BLEND_MULTIPLY)
 		plane_parents += new /obj/screen/plane_parent(PLANE_FLOOR, name = "floor_plane")
 		plane_parents += new /obj/screen/plane_parent(PLANE_WALL, name = "wall_plane")
 		plane_parents += new /obj/screen/plane_parent(PLANE_NOSHADOW_BELOW, name = "noshadow_below_plane")
