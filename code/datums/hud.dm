@@ -144,6 +144,7 @@
 
 		for (var/client/C in src.clients)
 			C.screen += S
+			
 		return S
 
 	proc/add_object(atom/movable/A, layer = HUD_LAYER, loc)
