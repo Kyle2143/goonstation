@@ -391,7 +391,7 @@ obj/critter/bear/care
 				H.blood_volume = 0
 			else
 				H.blood_volume -= blood_sip_amt
-				src.blood_points += blood_sip_amt*2			//fresh blood is the quenchiest. Bats get more blood points this way
+				src.blood_points += blood_sip_amt			//fresh blood is the quenchiest. Bats get more blood points this way
 				src.health += 2
 
 		else if (istype(target,/obj/item/reagent_containers/))
@@ -492,7 +492,7 @@ obj/critter/bear/care
 	is_pet = 2
 
 	New()
-		src.blood_points = world.load_intra_round_value("dr_acula")
+		src.blood_points = world.load_intra_round_value("dr_acula_blood_points")
 		src.health += blood_points / blood_sip_amt
 
 		
@@ -503,9 +503,13 @@ obj/critter/bear/care
 		UnregisterSignal(GLOBAL_SIGNAL, COMSIG_GLOBAL_REBOOT)
 		..()
 
+	CritterDeath()
+		..()
+		blood_points = 0
+
 	proc/save_dr_acula_blood()
 		if(src?.alive)
-			world.save_intra_round_value("heisenbee_tier", src.blood_points)
+			world.save_intra_round_value("dr_acula_blood_points", src.blood_points)
 
 
 	drink_blood(var/atom/target)

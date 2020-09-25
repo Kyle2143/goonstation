@@ -240,7 +240,7 @@ var/datum/score_tracker/score_tracker
 					else if(P.is_pet)
 						pets_escaped += P
 					if (istype(P, /obj/critter/bat/doctor))
-						acula_blood = P:blood_volume //this only gets populated if Dr. Acula escapes
+						acula_blood = P:blood_points //this only gets populated if Dr. Acula escapes
 			else if(ismobcritter(pet))
 				var/mob/living/critter/P = pet
 				if (in_centcom(pet) && isalive(P))

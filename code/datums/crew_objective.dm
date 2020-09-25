@@ -444,7 +444,7 @@ ABSTRACT_TYPE(/datum/objective/crew/medicaldirector)
 		explanation_text = "Ensure that Dr. Acula survives and drinks 200 units of blood by the end of the shift."
 		check_completion()
 			for (var/obj/critter/bat/doctor/Dr in world)
-				if (Dr.blood_volume >= 200 && Dr.alive)
+				if (Dr.blood_points >= 200 && Dr.alive)
 					return 1
 			return 0
 
