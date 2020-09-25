@@ -327,7 +327,7 @@ obj/critter/bear/care
 	crit_text = "really sinks its teeth into"
 
 
-	var/blood_volume = 0		//This will count all the blood that Dr. Acula has fed on. Cheaper than having a reagent_holder holding blood I suppose
+	var/blood_points = 0		//This will count all the blood that Dr. Acula has fed on. Cheaper than having a reagent_holder holding blood I suppose
 	var/atom/drink_target		//this would be the mob or obj/item/reagent_container that contains blood that we drink from
 	var/last_drink				//world.time last time this bat drank blood. Just so that they don't just drink a whole 300u of an iv bag without prompting in under a minute.
 	var/sips_taken = 0			//for calculating how many times a bat should drink at a souce before they are satiated for a time.
@@ -391,13 +391,13 @@ obj/critter/bear/care
 				H.blood_volume = 0
 			else
 				H.blood_volume -= blood_sip_amt
-				src.blood_volume += blood_sip_amt*2			//fresh blood is the quenchiest. Bats get more blood points this way
-			src.health += 2
+				src.blood_points += blood_sip_amt*2			//fresh blood is the quenchiest. Bats get more blood points this way
+				src.health += 2
 
 		else if (istype(target,/obj/item/reagent_containers/))
 			var/obj/item/reagent_containers/container = target
 			container.reagents.remove_reagent("blood", blood_sip_amt)
-			blood_volume += blood_sip_amt
+			blood_points += blood_sip_amt
 			src.health ++
 
 		else if (istype(target,/obj/fluid))
@@ -407,7 +407,7 @@ obj/critter/bear/care
 				F.group.last_drain = get_turf(F)
 				if (!F.group.draining)
 					F.group.add_drain_process()
-			blood_volume += max(blood_sip_amt, F.group.amt_per_tile)
+			blood_points += max(blood_sip_amt, F.group.amt_per_tile)
 			src.health ++
 
 		else return 0
@@ -490,6 +490,23 @@ obj/critter/bear/care
 	health = 30
 	generic = 0
 	is_pet = 2
+
+	New()
+		src.blood_points = world.load_intra_round_value("dr_acula")
+		src.health += blood_points / blood_sip_amt
+
+		
+		src.RegisterSignal(GLOBAL_SIGNAL, COMSIG_GLOBAL_REBOOT, .proc/save_dr_acula_blood)
+		..()
+
+	disposing()
+		UnregisterSignal(GLOBAL_SIGNAL, COMSIG_GLOBAL_REBOOT)
+		..()
+
+	proc/save_dr_acula_blood()
+		if(src?.alive)
+			world.save_intra_round_value("heisenbee_tier", src.blood_points)
+
 
 	drink_blood(var/atom/target)
 		..()
