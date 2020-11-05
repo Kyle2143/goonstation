@@ -256,6 +256,8 @@
 					pixel_y = -19
 				west
 					pixel_x = -24
+
+#ifdef MAP_OVERRIDE_POD_WARS
 		t1d1
 			id = "hangar_t1d1"
 
@@ -359,7 +361,110 @@
 					pixel_y = -19
 				west
 					pixel_x = -24
-
+			t1d1
+			id = "hangar_t1d1"
+ 
+			new_walls
+				north
+					pixel_y = 24
+				east
+					pixel_x = 24
+				south
+					pixel_y = -19
+				west
+					pixel_x = -24
+ 
+		t1d2
+			id = "hangar_t1d2"
+ 
+			new_walls
+				north
+					pixel_y = 24
+				east
+					pixel_x = 24
+				south
+					pixel_y = -19
+				west
+					pixel_x = -24
+ 
+		t1d3
+			id = "hangar_t1d3"
+ 
+			new_walls
+				north
+					pixel_y = 24
+				east
+					pixel_x = 24
+				south
+					pixel_y = -19
+				west
+					pixel_x = -24
+ 
+		t1d4
+			id = "hangar_t1d4"
+ 
+			new_walls
+				north
+					pixel_y = 24
+				east
+					pixel_x = 24
+				south
+					pixel_y = -19
+				west
+					pixel_x = -24
+ 
+		t2d1
+			id = "hangar_t2d1"
+ 
+			new_walls
+				north
+					pixel_y = 24
+				east
+					pixel_x = 24
+				south
+					pixel_y = -19
+				west
+					pixel_x = -24
+ 
+		t2d2
+			id = "hangar_t2d2"
+ 
+			new_walls
+				north
+					pixel_y = 24
+				east
+					pixel_x = 24
+				south
+					pixel_y = -19
+				west
+					pixel_x = -24
+ 
+		t2d3
+			id = "hangar_t2d3"
+ 
+			new_walls
+				north
+					pixel_y = 24
+				east
+					pixel_x = 24
+				south
+					pixel_y = -19
+				west
+					pixel_x = -24
+ 
+		t2d4
+			id = "hangar_t2d4"
+ 
+			new_walls
+				north
+					pixel_y = 24
+				east
+					pixel_x = 24
+				south
+					pixel_y = -19
+				west
+					pixel_x = -24
+#endif
 /obj/machinery/door_control/New()
 	..()
 	UnsubscribeProcess()
@@ -873,6 +978,120 @@
 				west
 					pixel_x = -22
 
+#ifdef MAP_OVERRIDE_POD_WARS
+		t1d1
+			id = "hangar_t1d1"
+			access_type = -1
+ 
+			new_walls
+				north
+					pixel_y = 24
+				east
+					pixel_x = 22
+				south
+					pixel_y = -19
+				west
+					pixel_x = -22
+ 
+		t1d2
+			id = "hangar_t1d2"
+			access_type = -1
+ 
+			new_walls
+				north
+					pixel_y = 24
+				east
+					pixel_x = 22
+				south
+					pixel_y = -19
+				west
+					pixel_x = -22
+ 
+		t1d3
+			id = "hangar_t1d3"
+			access_type = -1
+ 
+			new_walls
+				north
+					pixel_y = 24
+				east
+					pixel_x = 22
+				south
+					pixel_y = -19
+				west
+					pixel_x = -22
+ 
+		t1d4
+			id = "hangar_t1d4"
+			access_type = -1
+ 
+			new_walls
+				north
+					pixel_y = 24
+				east
+					pixel_x = 22
+				south
+					pixel_y = -19
+				west
+					pixel_x = -22
+ 
+		t2d1
+			id = "hangar_t2d1"
+			access_type = -1
+ 
+			new_walls
+				north
+					pixel_y = 24
+				east
+					pixel_x = 22
+				south
+					pixel_y = -19
+				west
+					pixel_x = -22
+ 
+		t2d2
+			id = "hangar_t2d2"
+			access_type = -1
+ 
+			new_walls
+				north
+					pixel_y = 24
+				east
+					pixel_x = 22
+				south
+					pixel_y = -19
+				west
+					pixel_x = -22
+ 
+		t2d3
+			id = "hangar_t2d3"
+			access_type = -1
+ 
+			new_walls
+				north
+					pixel_y = 24
+				east
+					pixel_x = 22
+				south
+					pixel_y = -19
+				west
+					pixel_x = -22
+ 
+		t2d4
+			id = "hangar_t2d4"
+			access_type = -1
+ 
+			new_walls
+				north
+					pixel_y = 24
+				east
+					pixel_x = 22
+				south
+					pixel_y = -19
+				west
+					pixel_x = -22
+
+#endif
 	New()
 		..()
 		UnsubscribeProcess()
