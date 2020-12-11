@@ -4,14 +4,6 @@
 
 
 
-// /datum/hud/proc/create_parallax()
-// 	var/mob/M
-// 	var/client/C
-// 	if (islist(src.clients) && src.clients.len)
-// 		C = src.clients[1]
-// 		M = C.mob
-// 	if (isnull(M))
-// 		return
 
 /client/proc/create_parallax()
 	var/client/C = src
@@ -22,8 +14,9 @@
 		parallax_whitespace += new /obj/screen/parallax/whitespace()
 
 	C.parallax_layers_k += new /obj/screen/parallax/layer/plasma_giant(C)
-	C.parallax_layers_k += new /obj/screen/parallax/layer/stars1(C)
-	// C.parallax_layers_k += new /obj/screen/parallax/layer/stars2(C)
+	C.parallax_layers_k += new /obj/screen/parallax/layer/starfield(C)
+	// C.parallax_layers_k += new /obj/screen/parallax/layer/nebula(C)
+	C.parallax_layers_k += new /obj/screen/parallax/layer/binary_stars(C)
 
 
 	// C.screen |= (C.parallax_layers_k + C.parallax_static_layers_tail)
@@ -36,18 +29,20 @@
 	icon = 'icons/turf/parallax/starfield.dmi'
 	icon_state = ""
 	blend_mode = BLEND_ADD
-	mouse_opacity = FALSE
+	mouse_opacity = 0
 	plane = PLANE_PARALLAX
 	layer = PARALLAX_LAYER
-	var/pan_s = 1				//for pan_speed
 	appearance_flags = TILE_BOUND
 	screen_loc = "1,1"
+	var/pan_s = 1				//for pan_speed
 	var/width
 	var/height
-	var/static/midx 	//middle x value of map, should be 150
-	var/static/midy 	//middle y value of map, should be 150
-	var/static/view_x
-	var/static/view_y
+	var/static/midx 	//middle x value of map, should be 150 most of the time
+	var/static/midy 	//middle y value of map, should be 150 most of the time
+	var/view_x = 21
+	var/view_y = 15
+	var/x_offset
+	var/y_offset
 
 	New(var/client/C)
 		..()
@@ -55,6 +50,7 @@
 		var/icon/I = new(icon, icon_state)
 		width = I.Width()
 		height = I.Height()
+		message_admins("[src]. width:[width] height:[height]")
 		midx = round(world.maxx/2)
 		midy = round(world.maxy/2)
 		var/list/items = splittext(C.view, "x")
@@ -66,6 +62,7 @@
 		// src.transform = matrix(1, 0, x*width, 0, 1, y*height)
 		// src.transform = matrix(midx-(x*pan_s),midy-(y*pan_s), MATRIX_TRANSLATE)
 
+		//defaults
 		if (!view_x)
 			view_x = 21
 		if (!view_y)
@@ -74,61 +71,88 @@
 		// var/change_x = ((x * pan_s) % (view_x*world.icon_size))
 		// var/change_y = ((y * pan_s) % (view_y*world.icon_size))
 		// message_admins("[x],[pan_s]%%[world.maxx]//[width] --[src]")
+
+		var/rel_x = x/world.maxx
+		var/rel_y = y/world.maxx
+
+		// var/m_x = midx-x
+		// var/m_y = midy-y
+		// animate(src, transform = matrix(m_x,m_y, MATRIX_TRANSLATE), time = 3, easing = SINE_EASING, flags = ANIMATION_END_NOW)
+
+		var/thing_x = midx-(x*pan_s)
+		var/thing_y = midy-(y*pan_s)
+
+		var/bounds_x = 5*world.icon_size
+		var/bounds_y = 5*world.icon_size
+
+		animate(src, transform = matrix(thing_x,thing_y, MATRIX_TRANSLATE), time = 3, easing = SINE_EASING, flags = ANIMATION_END_NOW)
 		// var/change_x = ((x * pan_s) % (world.maxx/width))
 		// var/change_y = ((y * pan_s) % (world.maxy/height))
 
 		// animate(src, transform = matrix(change_x,change_y, MATRIX_TRANSLATE), time = 3, easing = SINE_EASING, flags = ANIMATION_END_NOW)
 
+		
+
+		// var/xxx = (x * pan_s)/( src.view_x*world.icon_size) 
+		// var/yyy = (x * pan_s)/( src.view_y*world.icon_size) 
+		// message_admins("[midx]|[x]*[pan_s] = [x*pan_s]|[x_offset]")
 
 
-		var/xxx = (x * pan_s)/( src.view_x*world.icon_size) 
-		var/yyy = (x * pan_s)/( src.view_y*world.icon_size) 
-		animate(src, transform = matrix(xxx,yyy, MATRIX_TRANSLATE), time = 3, easing = SINE_EASING, flags = ANIMATION_END_NOW)
+		// var/x = world.icon_size
+		// animate(src, transform = matrix(midx(x*pan_s)-x_offset,(y*pan_s)-y_offset, MATRIX_TRANSLATE), time = 3, easing = SINE_EASING, flags = ANIMATION_END_NOW)
+		
+		//test
+		// animate(src, transform = matrix((midx-x)*pan_s-x_offset,(midy-y)*pan_s-y_offset, MATRIX_TRANSLATE), time = 3, easing = SINE_EASING, flags = ANIMATION_END_NOW)
 
 	plasma_giant
 		icon = 'icons/turf/parallax/plasma_giant.dmi'
 		icon_state = "plasma_giant"
-		layer = PARALLAX_LAYER+0.003
-		pan_s = 2
+		layer = PARALLAX_LAYER+0.004
+		pan_s = 1.4
 		blend_mode = BLEND_OVERLAY
-	stars1
-		icon_state = "starfield1"
-		layer = PARALLAX_LAYER+0.002
-		pan_s = 1
-		// New()
-		// 	..()
-			// var/matrix/M = matrix()
-			// M.Scale(1.375, 1)
-			// transform = M
-			
-	stars2
-		icon_state = "stars2"
+
+		New()
+			..()
+			x_offset = width*midx/world.maxx
+			// y_offset = height*midy/world.maxy
+
+	starfield
+		icon_state = "starfield"
 		layer = PARALLAX_LAYER+0.001
-		pan_s = 1
-		// New()
-		// 	..()
-		// 	var/matrix/M = matrix()
-		// 	M.Scale(1.375, 1)
-		// 	transform = M
+		pan_s = 0.6
+		New()
+			..()
+			var/matrix/M = matrix()
+			M.Scale(1.375, 1)
+			transform = M
+			
+	nebula
+		icon_state = "nebula"
+		layer = PARALLAX_LAYER+0.002
+		pan_s = 0.8
+		New()
+			..()
+			var/matrix/M = matrix()
+			M.Scale(1.375, 1)
+			transform = M
+
+	binary_stars
+		icon_state = "binary_stars"
+		layer = PARALLAX_LAYER+0.003
+		pan_s = 1.0
 
 /mob/Move(NewLoc)
 	var/tmp/old_loc = loc
 	..()
-	// if (NewLoc != old_loc)
+	if (NewLoc == old_loc || !src.client) 
+		message_admins("THINGYSDFD")
+		return
 	// var/midx = round(world.maxx/2)
 	// var/midy = round(world.maxy/2)
 	// boutput(src, "[old_loc]|[NewLoc] |[midx],[midy]")
-
-	if (src.client && src.client.parallax_layers_k)
-		for (var/obj/screen/parallax/layer/P in src.client.parallax_layers_k)
-			P.update_pos(x,y)
-			// if (istype(P, /obj/screen/parallax/layer/plasma_giant))
-			// 	P.transform = matrix(midx-(x*pan_s),midy-(y*pan_s), MATRIX_TRANSLATE)
-
-			// else		//stars
-			// 	P.transform = matrix(midx-(x*pan_s),midy-(y*pan_s), MATRIX_TRANSLATE)
-		// for (var/obj/screen/parallax/layer/stars2/P in client.parallax_layers_k)
-		// 	P.transform = matrix(-x,-y, MATRIX_TRANSLATE)
+	boutput(src, "x:[x] y:[y]")
+	for (var/obj/screen/parallax/layer/P in src?.client.parallax_layers_k)
+		P.update_pos(x,y)
 
 //Kinda stole this idea. Make all of spess blank for this client, then put parallax shit over it.
 /obj/screen/parallax/whitespace
