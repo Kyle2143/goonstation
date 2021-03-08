@@ -72,20 +72,35 @@
 		// var/change_y = ((y * pan_s) % (view_y*world.icon_size))
 		// message_admins("[x],[pan_s]%%[world.maxx]//[width] --[src]")
 
-		var/rel_x = x/world.maxx
-		var/rel_y = y/world.maxx
 
-		// var/m_x = midx-x
-		// var/m_y = midy-y
-		// animate(src, transform = matrix(m_x,m_y, MATRIX_TRANSLATE), time = 3, easing = SINE_EASING, flags = ANIMATION_END_NOW)
 
-		var/thing_x = midx-(x*pan_s)
-		var/thing_y = midy-(y*pan_s)
+		// var/thing_x = midx-(x*pan_s)
+		// var/thing_y = midy-(y*pan_s)
 
-		var/bounds_x = 5*world.icon_size
-		var/bounds_y = 5*world.icon_size
+		// var/bounds_x = 5*world.icon_size
+		// var/bounds_y = 5*world.icon_size
 
-		animate(src, transform = matrix(thing_x,thing_y, MATRIX_TRANSLATE), time = 3, easing = SINE_EASING, flags = ANIMATION_END_NOW)
+
+
+		// animate(src, transform = matrix(thing_x,thing_y, MATRIX_TRANSLATE), time = 3, easing = SINE_EASING, flags = ANIMATION_END_NOW)
+		// scrollX = calculateScroll(playerX, 00000, playfieldWidth, screenWidth - layerWidth + 1);
+
+ 	//  calculateScroll( int scroll, int minScroll, int maxScroll, int screenWidth - layerWidth + 1) {
+  // 		return (minScroll / 2 - scroll) * (screenWidth - layerWidth + 1 - viewportSize) / (maxScroll - minScroll);
+		
+		
+		var/Itestx = (pan_s*x) * ((view_x*world.icon_size)-width-(7*world.icon_size))/(world.maxx*world.icon_size)
+		var/Itesty = (pan_s*y) * ((view_y*world.icon_size)-height-(5*world.icon_size))/(world.maxy*world.icon_size)
+		// var/Itesty = (0/2-x) * (world.maxy-(height) - (5*world.icon_size)/*viewportSize*/)/(300-0)
+
+		// var/kyltestx = (x)(width-7*world.icon_size)/(world.maxx-(x*pan_s)
+
+		animate(src, transform = matrix(Itestx,Itesty, MATRIX_TRANSLATE), time = 3, easing = SINE_EASING, flags = ANIMATION_END_NOW)
+
+		// var/zewaka_testx = (world.maxx*width)%(x*pan_s)
+		// var/zewaka_testy = (world.maxy*height)%(y*pan_s)
+		// animate(src, transform = matrix(zewaka_testx,zewaka_testy, MATRIX_TRANSLATE), time = 3, easing = SINE_EASING, flags = ANIMATION_END_NOW)
+
 		// var/change_x = ((x * pan_s) % (world.maxx/width))
 		// var/change_y = ((y * pan_s) % (world.maxy/height))
 
@@ -122,9 +137,9 @@
 		pan_s = 0.6
 		New()
 			..()
-			var/matrix/M = matrix()
-			M.Scale(1.375, 1)
-			transform = M
+			// var/matrix/M = matrix()
+			// M.Scale(1.375, 1)
+			// transform = M
 			
 	nebula
 		icon_state = "nebula"
@@ -132,9 +147,9 @@
 		pan_s = 0.8
 		New()
 			..()
-			var/matrix/M = matrix()
-			M.Scale(1.375, 1)
-			transform = M
+			// var/matrix/M = matrix()
+			// M.Scale(1.375, 1)
+			// transform = M
 
 	binary_stars
 		icon_state = "binary_stars"
