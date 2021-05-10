@@ -90,6 +90,8 @@
 	/// mailgroup-specific ringtones, added on the fly!
 	var/list/mailgroup_ringtones = list()
 
+	var/obj/item/disk/data/floppy/read_only/authentication/auth_disk = null 	//Is the auth disk in this PDA? if so, this is a reference to it. Otherwise, null.
+
 	registered_owner()
 		.= registered
 
@@ -613,6 +615,9 @@
 				src.insert_id_card(ID, user)
 				boutput(user, "<span class='notice'>You insert [ID] into [src].</span>")
 
+	else if (istype(C, /obj/item/disk/data/floppy/read_only/authentication))
+		src.insert_auth_disk(C, user)
+
 /obj/item/device/pda2/examine()
 	. = ..()
 	. += "The back cover is [src.closed ? "closed" : "open"]."
@@ -805,6 +810,26 @@
 			src.cartridge = null
 
 		return
+
+
+	proc/eject_auth_disk(var/mob/user as mob)
+		if (src.auth_disk)
+			if (istype(user))
+				user.put_in_hand_or_drop(src.auth_disk)
+			else
+				var/turf/T = get_turf(src)
+				src.auth_disk.set_loc(T)
+			src.auth_disk = null
+			return
+
+	proc/insert_auth_disk(var/obj/item/disk/data/floppy/read_only/authentication/disk as obj, var/mob/user as mob)
+		if (!istype(disk))
+			return
+		if (user)
+			user.u_equip(disk)
+		disk.set_loc(src)
+		src.auth_disk = disk
+		boutput(user, "<span class='notice'>You insert [disk] into a perfectly shaped slot in [src].</span>")
 
 	proc/eject_id_card(var/mob/user as mob)
 		if (src.ID_card)
@@ -1075,6 +1100,29 @@
 		//src.dispose()
 		qdel(src)
 		return
+
+/obj/item/device/pda2/pixelaction(atom/target, params, mob/user, reach)
+	message_admins("[target]+[params]+[user.name]+[reach]")
+	//do special auth disk stuff... It overrides the PDA special attack...
+	if (auth_disk && get_dist(user, target) < 10)
+		message_admins(2)
+		if (istype(target, /obj/machinery))
+			//or /obj/machinery/shieldgenerator
+			//or /obj/machinery/door/airlock
+			//or /obj/machinery/door/firedoor
+
+
+			//prolly not  /obj/machinery/door/poddoor
+			message_admins(3)
+			var/obj/machinery/M = target
+			M.attack_ai(user)
+		return 1
+
+	if(special && !special.manualTriggerOnly && !reach)
+		special.pixelaction(target,params,user,reach)
+		return 1
+	message_admins(1)
+	..()
 
 /obj/item/device/pda2/ai/display_message(var/message)
 	. = ..(message)

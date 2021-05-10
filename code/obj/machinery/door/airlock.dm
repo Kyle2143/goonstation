@@ -1791,6 +1791,14 @@ obj/machinery/door/airlock
 		ui.open()
 	return TRUE
 
+//Checks if the user mob has a pda with the auth disk equipped in their hand.
+/obj/machinery/door/airlock/proc/check_for_auth_disk_pda(mob/user)
+	var/obj/item/device/pda2/pda = user.equipped()
+	if (istype(pda))
+		return pda.auth_disk ? TRUE : FALSE
+
+	return FALSE
+
 /obj/machinery/door/airlock/ui_data(mob/user)
 	. = list(
 		"userStates" = list(
@@ -1798,6 +1806,7 @@ obj/machinery/door/airlock
 			"isBorg" = ishivebot(user) || isrobot(user),
 			"isAi" = isAI(user),
 			"isCarbon" = iscarbon(user),
+			"hasAuthDiskPDA" = check_for_auth_disk_pda(user),
 		),
 		"panelOpen" = src.p_open,
 
@@ -1856,7 +1865,7 @@ obj/machinery/door/airlock
 				if (src.canAIHack() && !src.aiHacking)
 					src.hack(usr)
 					. = TRUE
-	if(src.arePowerSystemsOn() && canAIControl() && (ishivebot(usr) || isrobot(usr) || isAI(usr)))
+	if(src.arePowerSystemsOn() && canAIControl() && (ishivebot(usr) || isrobot(usr) || isAI(usr) || check_for_auth_disk_pda(usr)))
 		switch(action)
 			if("disruptMain")
 				if(!secondsMainPowerLost)

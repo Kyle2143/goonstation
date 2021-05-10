@@ -19,7 +19,7 @@ export const uiCurrentUserPermissions = data => {
 
   return {
     // can only access airlock if they're AI or a borg.
-    airlock: (userStates.isBorg) || (userStates.isAi),
+    airlock: (userStates.isBorg) || (userStates.isAi) || (userStates.hasAuthDiskPDA),
     /** borgs can only access panel when they're next to the airlock
     * carbons are checked on the backend so no need to check their distance here
     * so we'll return true
