@@ -1,0 +1,11 @@
+(t)tue may 25 21
+(u)Kyle
+(*)Add this changelog thing to display on lobby connect for the pod wars map.
+(*)Blasters can no longer be dual wielded. More changes to come regarding blasters and we might remove this, but for now, no dual wielding.
+(+)Also should fix some of the headache with running the round to do with selecting the modes for the pod wars map and changing the mode off pod wars when the map isn't pod wars.
+(t)Sometime over the next couple weeks after release
+(u)Sord, Kyle
+(*)Bunch of balance changes as well as some community pr's from Zonespace27. I forget what they are really. Big change to the Reliant. 
+(t)tue may 25 21
+(u)Virva, Yass, Sord, Kyle
+(*)Pod Wars released. Coding done mostly be me, Kyle and some from Yass. Map by Sord, various sounds, sprites by Virva, Flab did the NT pilot suits. Efrem and Phuzzy voicing the Syndicate and NT Commanders respectively.

@@ -363,6 +363,7 @@ var/global
 
 	datum/changelog/changelog = null
 	datum/admin_changelog/admin_changelog = null
+	datum/pod_wars_changelog/pod_wars_changelog = null
 
 	list/datum/powernet/powernets = null
 

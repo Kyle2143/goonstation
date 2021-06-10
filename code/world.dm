@@ -372,6 +372,9 @@ var/f_color_selector_handler/F_Color_Selector
 	Z_LOG_DEBUG("World/New", "Setting up changelogs...")
 	changelog = new /datum/changelog()
 	admin_changelog = new /datum/admin_changelog()
+#ifdef MAP_OVERRIDE_POD_WARS
+	pod_wars_changelog = new /datum/pod_wars_changelog()
+#endif
 
 #ifdef DATALOGGER
 	game_stats = new

@@ -46,6 +46,16 @@ var/global/current_state = GAME_STATE_WORLD_INIT
 	else
 		src.hide_mode = FALSE
 
+	//If the map is pod wars, set the mode to pod wars.
+	//If the map isn't pod wars, but the mode is set to it from the previous round, set it to secret.
+#ifdef MAP_OVERRIDE_POD_WARS
+	if (master_mode != "pod_wars")
+		master_mode = "pod_wars"
+#else
+	if(master_mode == "pod_wars")
+		master_mode = "secret"
+#endif
+
 	#ifdef I_DONT_WANNA_WAIT_FOR_THIS_PREGAME_SHIT_JUST_GO
 	pregame_timeleft = 1
 	#endif
@@ -111,8 +121,12 @@ var/global/current_state = GAME_STATE_WORLD_INIT
 		if("action") src.mode = config.pick_mode(pick("nuclear","wizard","blob"))
 		if("intrigue") src.mode = config.pick_mode(pick(prob(300);"mixed_rp", prob(200); "traitor", prob(75);"changeling","vampire", prob(50); "conspiracy", "spy_theft","arcfiend", prob(50); "extended"))
 		if("pod_wars") src.mode = config.pick_mode("pod_wars")
+//This should make it so if someone accidentally sets the mode to pod wars when on the wrong map, they just are on extended.
+#ifndef MAP_OVERRIDE_POD_WARS
+		if("pod_wars") src.mode = config.pick_mode("extended")
+#endif
 		else src.mode = config.pick_mode(master_mode)
-
+//final failsafe I guess...
 #if defined(MAP_OVERRIDE_POD_WARS)
 	src.mode = config.pick_mode("pod_wars")
 #endif
