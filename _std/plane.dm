@@ -81,6 +81,7 @@ client
 
 	New()
 		Z_LOG_DEBUG("Cient/New", "[src.ckey] - Adding plane_parents")
+		add_plane(new /atom/movable/screen/plane_parent(PLANE_PARALLAX, name = "parallax_plane",blend_mode = BLEND_MULTIPLY))
 		add_plane(new /atom/movable/screen/plane_parent(PLANE_UNDERFLOOR, name = "underfloor_plane"))
 		add_plane(new /atom/movable/screen/plane_parent(PLANE_SPACE, name = "space_plane"))
 		add_plane(new /atom/movable/screen/plane_parent(PLANE_FLOOR, name = "floor_plane"))

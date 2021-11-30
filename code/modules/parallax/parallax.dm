@@ -1,6 +1,6 @@
 /client
 	var/list/parallax_layers_k = list()
-	var/static/list/parallax_whitespace// = /obj/screen/parallax/whitespace //Doesn't move, it's 'static' get it?
+	var/static/list/parallax_whitespace// = /atom/movable/screen/parallax/whitespace //Doesn't move, it's 'static' get it?
 
 
 
@@ -11,12 +11,12 @@
 	if(isnull(C.parallax_layers_k))
 		C.parallax_layers_k = list()
 	if (isnull(parallax_whitespace))
-		parallax_whitespace += new /obj/screen/parallax/whitespace()
+		parallax_whitespace += new /atom/movable/screen/parallax/whitespace()
 
-	C.parallax_layers_k += new /obj/screen/parallax/layer/plasma_giant(C)
-	C.parallax_layers_k += new /obj/screen/parallax/layer/starfield(C)
-	// C.parallax_layers_k += new /obj/screen/parallax/layer/nebula(C)
-	C.parallax_layers_k += new /obj/screen/parallax/layer/binary_stars(C)
+	C.parallax_layers_k += new /atom/movable/screen/parallax/layer/plasma_giant(C)
+	C.parallax_layers_k += new /atom/movable/screen/parallax/layer/starfield(C)
+	// C.parallax_layers_k += new /atom/movable/screen/parallax/layer/nebula(C)
+	C.parallax_layers_k += new /atom/movable/screen/parallax/layer/binary_stars(C)
 
 
 	// C.screen |= (C.parallax_layers_k + C.parallax_static_layers_tail)
@@ -25,7 +25,7 @@
 
 /client/proc/update_parallax()
 
-/obj/screen/parallax/layer
+/atom/movable/screen/parallax/layer
 	icon = 'icons/turf/parallax/starfield.dmi'
 	icon_state = ""
 	blend_mode = BLEND_ADD
@@ -87,8 +87,8 @@
 
  	//  calculateScroll( int scroll, int minScroll, int maxScroll, int screenWidth - layerWidth + 1) {
   // 		return (minScroll / 2 - scroll) * (screenWidth - layerWidth + 1 - viewportSize) / (maxScroll - minScroll);
-		
-		
+
+
 		var/Itestx = (pan_s*x) * ((view_x*world.icon_size)-width-(7*world.icon_size))/(world.maxx*world.icon_size)
 		var/Itesty = (pan_s*y) * ((view_y*world.icon_size)-height-(5*world.icon_size))/(world.maxy*world.icon_size)
 		// var/Itesty = (0/2-x) * (world.maxy-(height) - (5*world.icon_size)/*viewportSize*/)/(300-0)
@@ -106,16 +106,16 @@
 
 		// animate(src, transform = matrix(change_x,change_y, MATRIX_TRANSLATE), time = 3, easing = SINE_EASING, flags = ANIMATION_END_NOW)
 
-		
 
-		// var/xxx = (x * pan_s)/( src.view_x*world.icon_size) 
-		// var/yyy = (x * pan_s)/( src.view_y*world.icon_size) 
+
+		// var/xxx = (x * pan_s)/( src.view_x*world.icon_size)
+		// var/yyy = (x * pan_s)/( src.view_y*world.icon_size)
 		// message_admins("[midx]|[x]*[pan_s] = [x*pan_s]|[x_offset]")
 
 
 		// var/x = world.icon_size
 		// animate(src, transform = matrix(midx(x*pan_s)-x_offset,(y*pan_s)-y_offset, MATRIX_TRANSLATE), time = 3, easing = SINE_EASING, flags = ANIMATION_END_NOW)
-		
+
 		//test
 		// animate(src, transform = matrix((midx-x)*pan_s-x_offset,(midy-y)*pan_s-y_offset, MATRIX_TRANSLATE), time = 3, easing = SINE_EASING, flags = ANIMATION_END_NOW)
 
@@ -140,7 +140,7 @@
 			// var/matrix/M = matrix()
 			// M.Scale(1.375, 1)
 			// transform = M
-			
+
 	nebula
 		icon_state = "nebula"
 		layer = PARALLAX_LAYER+0.002
@@ -159,25 +159,40 @@
 /mob/Move(NewLoc)
 	var/tmp/old_loc = loc
 	..()
-	if (NewLoc == old_loc || !src.client) 
+	if (NewLoc == old_loc || src.client)
 		message_admins("THINGYSDFD")
 		return
 	// var/midx = round(world.maxx/2)
 	// var/midy = round(world.maxy/2)
 	// boutput(src, "[old_loc]|[NewLoc] |[midx],[midy]")
 	boutput(src, "x:[x] y:[y]")
-	for (var/obj/screen/parallax/layer/P in src?.client.parallax_layers_k)
+	for (var/atom/movable/screen/parallax/layer/P in src?.client.parallax_layers_k)
 		P.update_pos(x,y)
 
 //Kinda stole this idea. Make all of spess blank for this client, then put parallax shit over it.
-/obj/screen/parallax/whitespace
+/atom/movable/screen/parallax/whitespace
+	icon = 'icons/effects/effects.dmi'
+	icon_state = "nothing"
 	appearance_flags = PLANE_MASTER
 	plane = PLANE_SPACE
+	// blend_mode = BLEND_INSET_OVERLAY	//This one worked
+	blend_mode = BLEND_MULTIPLY
+	override = 1
 	color = list(
-		0, 0, 0, 0,
-		0, 0, 0, 0,
-		0, 0, 0, 0,
-		1, 1, 1, 1,
-		0, 0, 0, 0
+		1,1,1,1,
+		1,1,1,1,
+		1,1,1,1,
+		1,1,1,1,
+		1,1,1,1
 		)
 	screen_loc = "CENTER,CENTER"
+
+	// New()	//Does nothing... maybe...
+	// 	..()
+	// 	var/icon/I = new/icon('icons/effects/nothing.dmi',"nothing")
+	// 	filters += filter(type="alpha",icon = I, flags = MASK_INVERSE)
+
+/turf/space
+	blend_mode = BLEND_MULTIPLY
+	// alpha = 0
+
