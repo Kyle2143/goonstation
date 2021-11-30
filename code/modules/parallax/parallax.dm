@@ -175,9 +175,10 @@
 	icon_state = "nothing"
 	appearance_flags = PLANE_MASTER
 	plane = PLANE_SPACE
-	// blend_mode = BLEND_INSET_OVERLAY	//This one worked
-	blend_mode = BLEND_MULTIPLY
+	blend_mode = BLEND_INSET_OVERLAY
+	// blend_mode = BLEND_MULTIPLY		//This one does not work for some reason I don't understand...
 	override = 1
+
 	color = list(
 		1,1,1,1,
 		1,1,1,1,
@@ -193,6 +194,6 @@
 	// 	filters += filter(type="alpha",icon = I, flags = MASK_INVERSE)
 
 /turf/space
-	blend_mode = BLEND_MULTIPLY
+	blend_mode = BLEND_ADD
 	// alpha = 0
 
