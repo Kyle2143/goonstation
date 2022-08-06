@@ -483,6 +483,10 @@ var/global/list/vpn_ip_checks = list() //assoc list of ip = true or ip = false. 
 
 			if (src.holder && rank_to_level(src.holder.rank) >= LEVEL_MOD) // No admin changelog for goat farts (Convair880).
 				admin_changes()
+#ifdef MAP_OVERRIDE_POD_WARS
+			pod_wars_changes()
+#endif
+
 #endif
 
 			if (src.byond_version < 514 || src.byond_build < 1566)

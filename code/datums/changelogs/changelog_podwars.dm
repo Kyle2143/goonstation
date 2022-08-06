@@ -1,7 +1,7 @@
 /*I'm sorry about this, but I'm not int he mood to rewrite this dumb system, and apparently neither was wire when he made the
-admin changelog. So I just basically did the same. These changelogs should all be encapsulated in a datum/changelog 
+admin changelog. So I just basically did the same. These changelogs should all be encapsulated in a datum/changelog
 type. But instead we have this. A datum that is basically just a string and the actual processing of the changelog stuff done outside the datum...
-Sincerely yours, 
+Sincerely yours,
 Kyle
 */
 
@@ -16,21 +16,27 @@ ATTENTION: The changelog has moved into its own file: strings/admin_changelog.tx
 
 /datum/pod_wars_changelog/New()
 	..()
-	//Changelog has moved to its own file.
-	//Note: deliberately using double quotes so that it won't be included in the RSC -SpyGuy
-	html = changelog_parse(file2text("strings/pod_wars_changelog.txt"), "Admin Changelog")
+	html = changelog_parse(file2text("strings/pod_wars_changelog.txt"), "Pod Wars Changelog")
 
 
 //Show the pod_wars changelog
-/client/proc/changes_pod_wars()
-	if (winget(src, "changes", "is-visible") == "true")
-		src.Browse(null, "window=changes")
+/client/proc/pod_wars_changes()
+	set category = "Commands"
+	set name = "Pod Wars Changelog"
+	set desc = "Show or hide the pod wars changelog"
+
+	if (winget(src, "pw_changes", "is-visible") == "true")
+		src.Browse(null, "window=pw_changes")
+
 	else
-		var/changelogHtml = grabResource("html/changelog.html")
 		//in case someone wants to look at it when the map isn't pod_wars
 		if (isnull(pod_wars_changelog))
 			pod_wars_changelog = new /datum/pod_wars_changelog()
 
-		var/data = pod_wars_changelog:html
-		changelogHtml = replacetext(changelogHtml, "<!-- HTML GOES HERE -->", "[data]")
-		src.Browse(changelogHtml, "window=adminchanges;size=500x650;title=Pod+Wars+Changelog;", 1)
+		if (istype(pod_wars_changelog, /datum/pod_wars_changelog))
+			var/datum/pod_wars_changelog/changer = pod_wars_changelog
+			var/changelogHtml = grabResource("html/changelog.html")	//This is actually just css in a style tag
+			var/data = changer.html
+			changelogHtml = replacetext(changelogHtml, "<!-- HTML GOES HERE -->", "[data]")
+			src.Browse(changelogHtml, "window=pw_changes;size=500x650;title=Pod+Wars+Changelog;", 1)
+
